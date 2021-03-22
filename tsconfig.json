@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "ES6",
+    "baseUrl": ".",
+    "target": "es2017",
+    "outDir": "build/ts",
+    "rootDir": "src",
+    "noImplicitAny": false,
+    "sourceMap": false,
+    "removeComments": true,
+    "jsx": "react",
+    "skipLibCheck": true,
+    "paths": {
+      "react-dom": ["/node_modules/react-dom/umd/*"],
+      "react": ["/node_modules/react/umd/*"]
+    },
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  }
+}
