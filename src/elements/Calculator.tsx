@@ -4,10 +4,11 @@ import { Frame } from "./Frame.js";
 import { Logic } from "./Logic.js";
 import { Row } from "./Row.js";
 
+const logic = new Logic();
+
 export function Calculator(props) {
 
-  const [display, setDisplay] = React.useState('HELLO');
-  const logic = new Logic();
+  const [display, setDisplay] = React.useState('0');
   logic.onDisplayChanged(setDisplay)
 
   return <Frame>

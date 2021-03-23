@@ -10,7 +10,7 @@ export class Logic {
   private setDisplay: (value: string) => void;
 
   private firstValue = 0;
-  private secondValue = 0;
+  private secondValue = null;
   private operation = null;
   private display = '';
 
@@ -44,8 +44,11 @@ export class Logic {
   updateDisplay() {
     try {
       this.display = this.firstValue.toString();
-      if (!!this.operation) {
-        this.display = this.display + " " + this.getSymbolFromOperation(this.operation) + " " + this.secondValue.toString();
+      console.log('this.operation ' + this.operation);
+      if (this.operation !== null) {
+        console.log("Updating display: " + this.getSymbolFromOperation(this.operation));
+        const secondValueText = this.secondValue !== null ? this.secondValue.toString() : ' ';
+        this.display = this.display + " " + this.getSymbolFromOperation(this.operation) + " " + secondValueText;
       }
       this.setDisplay(this.display);
     } catch (error) {
@@ -55,7 +58,7 @@ export class Logic {
 
   clear() {
     this.firstValue = 0;
-    this.secondValue = 0;
+    this.secondValue = null;
     this.operation = null;
     this.updateDisplay();
   }
@@ -69,7 +72,7 @@ export class Logic {
   }
 
   updateValue(initValue: number, value: number): number {
-    if (initValue === 0) {
+    if (initValue === 0 || initValue === null) {
       return value;
     }
     return Number(initValue.toString() + value);
@@ -82,14 +85,15 @@ export class Logic {
   }
 
   deleteCharacter(initValue: number): number {
-    const valueString = initValue.toString();
+    const direction = initValue > 0 ? 1 : -1; 
+    const valueString = Math.abs(initValue).toString();
     const SINGLE_DIGIT = 1;
     if (valueString.length === SINGLE_DIGIT) return 0;
-    return Number(valueString.substring(0, valueString.length - 1));
+    return direction * Number(valueString.substring(0, valueString.length - 1));
   }
 
   delCharacter() {
-    const isFirstOperation = !this.operation;
+    const isFirstOperation = this.operation === null;
     if (isFirstOperation) {
       this.firstValue = this.deleteCharacter(this.firstValue);
     } else {
@@ -101,7 +105,7 @@ export class Logic {
   onPress(value: number): () => void {
     const self = this;
     return () => {
-      const isFirstOperation = !!self.operation;
+      const isFirstOperation = self.operation === null;
       if (isFirstOperation) {
         self.firstValue = self.updateValue(self.firstValue, value);
       } else {
@@ -112,11 +116,12 @@ export class Logic {
   }
 
   setOperator(operator: Operation) {
-    const isFirstOperation = !this.operation;
-    if (!isFirstOperation) {
+    const isFirstOperation = this.operation === null;
+    if (!isFirstOperation && this.secondValue !== null) {
       this.calculate();
     }
     this.operation = operator;
+    this.updateDisplay();
   }
 
   add() {
@@ -136,7 +141,7 @@ export class Logic {
   }
 
   negate() {
-    const isFirstOperation = !this.operation;
+    const isFirstOperation = this.operation === null;
     if (isFirstOperation) {
       this.firstValue = -this.firstValue;
     } else {
@@ -146,7 +151,7 @@ export class Logic {
   }
 
   addDot() {
-    const isFirstOperation = !this.operation;
+    const isFirstOperation = this.operation === null;
     if (isFirstOperation) {
       this.firstValue = this.addDotToValue(this.firstValue);
     } else {
@@ -156,7 +161,7 @@ export class Logic {
   }
 
   getCalculationResult() {
-    if (!this.operation) {
+    if (this.operation === null) {
       return this.firstValue;
     }
     if (this.operation === Operation.Add) return this.firstValue + this.secondValue;
@@ -166,7 +171,7 @@ export class Logic {
   }
 
   calculate() {
-    if (!this.operation) {
+    if (this.operation === null) {
       return;
     }
     const result = this.getCalculationResult();
