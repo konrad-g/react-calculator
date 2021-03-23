@@ -9,10 +9,10 @@ export class Logic {
 
   private setDisplay: (value: string) => void;
 
-  private firstValue = 0;
-  private secondValue = null;
-  private operation = null;
-  private display = '';
+  private firstValue: string = '0';
+  private secondValue: string | null = null;
+  private operation: Operation | null = null;
+  private display: string = '';
 
   constructor() {
     this.updateDisplay = this.updateDisplay.bind(this);
@@ -43,11 +43,9 @@ export class Logic {
 
   updateDisplay() {
     try {
-      this.display = this.firstValue.toString();
-      console.log('this.operation ' + this.operation);
+      this.display = this.firstValue;
       if (this.operation !== null) {
-        console.log("Updating display: " + this.getSymbolFromOperation(this.operation));
-        const secondValueText = this.secondValue !== null ? this.secondValue.toString() : ' ';
+        const secondValueText = this.secondValue !== null ? this.secondValue : ' ';
         this.display = this.display + " " + this.getSymbolFromOperation(this.operation) + " " + secondValueText;
       }
       this.setDisplay(this.display);
@@ -57,7 +55,7 @@ export class Logic {
   }
 
   clear() {
-    this.firstValue = 0;
+    this.firstValue = '0';
     this.secondValue = null;
     this.operation = null;
     this.updateDisplay();
@@ -67,29 +65,34 @@ export class Logic {
     this.clear();
     const MAX_RANDOM = 100;
     const random = Math.round(Math.random() * MAX_RANDOM);
-    this.firstValue = random;
+    this.firstValue = random.toString();
     this.updateDisplay();
   }
 
-  updateValue(initValue: number, value: number): number {
-    if (initValue === 0 || initValue === null) {
-      return value;
-    }
-    return Number(initValue.toString() + value);
-  }
-
-  addDotToValue(initValue: number): number {
-    const valueString = initValue.toString();
-    if (valueString.includes(".")) return initValue;
-    return Number(valueString + ".0");
-  }
-
-  deleteCharacter(initValue: number): number {
-    const direction = initValue > 0 ? 1 : -1; 
-    const valueString = Math.abs(initValue).toString();
+  isSingleDigit(value: string | null) {
     const SINGLE_DIGIT = 1;
-    if (valueString.length === SINGLE_DIGIT) return 0;
-    return direction * Number(valueString.substring(0, valueString.length - 1));
+    const SINGLE_DIGIT_NEGATIVE = 2;
+    return value === null || value.length <= SINGLE_DIGIT || (value.length === SINGLE_DIGIT_NEGATIVE && value.includes('-'));
+  }
+
+  updateValue(initValue: string, value: number): string {
+    if ((Number(initValue) === 0 && this.isSingleDigit(initValue)) || initValue === null) {
+      return value.toString();
+    }
+    return initValue + value;
+  }
+
+  addDotToValue(value: string): string {
+    if (value === null) return '0.';
+    if (value.includes(".")) return value;
+    return value + ".";
+  }
+
+  deleteCharacter(initValueText: string): string {
+    if (this.isSingleDigit(initValueText)) {
+      return '0';
+    }
+    return initValueText.substring(0, initValueText.length - 1);
   }
 
   delCharacter() {
@@ -143,9 +146,9 @@ export class Logic {
   negate() {
     const isFirstOperation = this.operation === null;
     if (isFirstOperation) {
-      this.firstValue = -this.firstValue;
+      this.firstValue = (-Number(this.firstValue)).toString();
     } else {
-      this.secondValue = -this.secondValue;
+      this.secondValue = (-Number(this.secondValue)).toString();
     }
     this.updateDisplay();
   }
@@ -164,10 +167,14 @@ export class Logic {
     if (this.operation === null) {
       return this.firstValue;
     }
-    if (this.operation === Operation.Add) return this.firstValue + this.secondValue;
-    if (this.operation === Operation.Subtract) return this.firstValue - this.secondValue;
-    if (this.operation === Operation.Multiply) return this.firstValue * this.secondValue;
-    if (this.operation === Operation.Divide) return this.firstValue / this.secondValue;
+    const SAFETY_CALC = 100000;
+    const firstValue = Number(this.firstValue) * SAFETY_CALC;
+    const secondValue = Number(this.secondValue) * SAFETY_CALC;
+
+    if (this.operation === Operation.Add) return (firstValue + secondValue) / SAFETY_CALC;
+    if (this.operation === Operation.Subtract) return (firstValue - secondValue) / SAFETY_CALC;
+    if (this.operation === Operation.Multiply) return (firstValue * secondValue) / SAFETY_CALC / SAFETY_CALC;
+    if (this.operation === Operation.Divide) return (firstValue / secondValue) / SAFETY_CALC * SAFETY_CALC;
   }
 
   calculate() {
@@ -176,7 +183,7 @@ export class Logic {
     }
     const result = this.getCalculationResult();
     this.clear();
-    this.firstValue = result;
+    this.firstValue = result.toString();
     this.updateDisplay();
   }
 }
