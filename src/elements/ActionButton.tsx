@@ -1,14 +1,10 @@
-declare const React;
+interface Props {
+  symbol?: string;
+}
 
-export class ActionButton {
+export class ActionButton extends React.Component<Props> {
 
-  symbol: string;
-  
-  constructor(symbol: string) {
-    this.symbol = symbol;
-  }
-
-  build() {
-    return <div className="action-button">{this.symbol}</div>;
+  render() {
+    return <div className="action-button">{this.props.symbol ?? '||'}</div>;
   }
 }

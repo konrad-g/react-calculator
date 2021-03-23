@@ -1,8 +1,6 @@
-declare const React;
+export class Display extends React.Component {
 
-export class Display {
-
-  build() {
+  render() {
     return <div className="display">123 + 2 = 125</div>;
   }
 }

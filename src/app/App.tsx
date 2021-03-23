@@ -1,38 +1,49 @@
 import { ActionButton } from "../elements/ActionButton.js";
 import { Display } from "../elements/Display.js";
 import { Frame } from "../elements/Frame.js";
-
-declare const ReactDOM;
-declare const React;
+import { Row } from "../elements/Row.js";
 
 class App {
 
   start() {
-    const frame = new Frame();
-    const display = new Display()
-    frame.addComponent(display.build());
-    frame.addComponent(new ActionButton("").build());
-    frame.addComponent(new ActionButton("").build());
-    frame.addComponent(new ActionButton("C").build());
-    frame.addComponent(new ActionButton("<-").build());
-    frame.addComponent(new ActionButton("7").build());
-    frame.addComponent(new ActionButton("8").build());
-    frame.addComponent(new ActionButton("9").build());
-    frame.addComponent(new ActionButton("x").build());
-    frame.addComponent(new ActionButton("4").build());
-    frame.addComponent(new ActionButton("5").build());
-    frame.addComponent(new ActionButton("6").build());
-    frame.addComponent(new ActionButton("-").build());
-    frame.addComponent(new ActionButton("1").build());
-    frame.addComponent(new ActionButton("2").build());
-    frame.addComponent(new ActionButton("3").build());
-    frame.addComponent(new ActionButton("+").build());
-    frame.addComponent(new ActionButton("+-").build());
-    frame.addComponent(new ActionButton("0").build());
-    frame.addComponent(new ActionButton(",").build());
-    frame.addComponent(new ActionButton("=").build());
-
-    ReactDOM.render(frame.build(), document.getElementById("main"));
+    ReactDOM.render(
+      <Frame>
+        <Row>
+          <Display />
+        </Row>
+        <Row>
+          <ActionButton />
+          <ActionButton />
+          <ActionButton symbol="C" />
+          <ActionButton symbol="<-" />
+        </Row>
+        <Row>
+          <ActionButton symbol="7" />
+          <ActionButton symbol="8" />
+          <ActionButton symbol="9" />
+          <ActionButton symbol="x" />
+        </Row>
+        <Row>
+          <ActionButton symbol="4" />
+          <ActionButton symbol="5" />
+          <ActionButton symbol="6" />
+          <ActionButton symbol="-" />
+        </Row>
+        <Row>
+          <ActionButton symbol="1" />
+          <ActionButton symbol="2" />
+          <ActionButton symbol="3" />
+          <ActionButton symbol="+" />
+        </Row>
+        <Row>
+          <ActionButton symbol="+-" />
+          <ActionButton symbol="0" />
+          <ActionButton symbol="," />
+          <ActionButton symbol="=" />
+        </Row>
+      </Frame>, 
+      document.getElementById("main")
+    );
   }
 }
 

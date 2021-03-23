@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
+    "allowUmdGlobalAccess": true,
     "module": "ES6",
-    "baseUrl": ".",
     "target": "es2017",
     "outDir": "build/ts",
     "rootDir": "src",
@@ -10,10 +10,6 @@
     "removeComments": true,
     "jsx": "react",
     "skipLibCheck": true,
-    "paths": {
-      "react-dom": ["/node_modules/react-dom/umd/*"],
-      "react": ["/node_modules/react/umd/*"]
-    },
     "typeRoots": [
       "node_modules/@types"
     ]

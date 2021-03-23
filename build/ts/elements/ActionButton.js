@@ -1,8 +1,6 @@
-export class ActionButton {
-    constructor(symbol) {
-        this.symbol = symbol;
-    }
-    build() {
-        return React.createElement("div", { className: "action-button" }, this.symbol);
+export class ActionButton extends React.Component {
+    render() {
+        var _a;
+        return React.createElement("div", { className: "action-button" }, (_a = this.props.symbol) !== null && _a !== void 0 ? _a : '||');
     }
 }
