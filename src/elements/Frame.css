@@ -1,0 +1,10 @@
+.frame {
+  background-color: #f0f0f0;
+  border: #030303 1px solid;
+  border-radius: 5px;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.75);
+}
