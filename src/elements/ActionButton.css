@@ -10,7 +10,7 @@
   user-select: none;
 }
 
-.action-button:active {
+.action-button.enabled:active {
   background-color: #e9e9e9;
   box-shadow: inset 1px 1px 4px 0px rgba(0,0,0,0.35);
 }

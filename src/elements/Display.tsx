@@ -1,6 +1,10 @@
-export class Display extends React.Component {
+interface Props {
+  value: string;
+}
+
+export class Display extends React.Component<Props> {
 
   render() {
-    return <div className="display">123 + 2 = 125</div>;
+    return <div className="display">{this.props.value}</div>;
   }
 }
