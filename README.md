@@ -14,3 +14,7 @@ Run `npm start`
 
 ## Rebuild and watch TypeScript  
 Run `npm run watch-ts`  
+
+## Custom Software Development
+[Digital Jetty](https://digitaljetty.com/)  
+We Make Software | Scale your business with us  
